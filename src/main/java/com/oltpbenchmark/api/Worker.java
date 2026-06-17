@@ -84,7 +84,7 @@ public abstract class Worker<T extends BenchmarkModule> implements Runnable {
       try {
         this.conn = this.benchmark.makeConnection();
         this.conn.setAutoCommit(false);
-        // this.conn.setTransactionIsolation(this.configuration.getIsolationMode());
+        this.conn.setTransactionIsolation(this.configuration.getIsolationMode());
       } catch (SQLException ex) {
         throw new RuntimeException("Failed to connect to database", ex);
       }
@@ -425,7 +425,7 @@ public abstract class Worker<T extends BenchmarkModule> implements Runnable {
             }
             this.conn = this.benchmark.makeConnection();
             this.conn.setAutoCommit(false);
-            // this.conn.setTransactionIsolation(this.configuration.getIsolationMode());
+            this.conn.setTransactionIsolation(this.configuration.getIsolationMode());
           } catch (SQLException ex) {
             if (LOG.isDebugEnabled()) {
               LOG.debug(String.format("%s failed to open a connection...", this));
