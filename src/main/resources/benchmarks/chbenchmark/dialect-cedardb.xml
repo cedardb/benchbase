@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<dialects>
+    <dialect type="CEDARDB">
+        <procedure name="Q15">
+            <statement name="createview_stmt"></statement>
+            <statement name="query_stmt">
+                with	 revenue0 (supplier_no, total_revenue) as (
+	                select	mod((s_w_id * s_i_id),10000) as supplier_no,
+		                sum(ol_amount) as total_revenue
+	                from	order_line, stock
+		            where ol_i_id = s_i_id and ol_supply_w_id = s_w_id
+		            and ol_delivery_d >= '2007-01-02 00:00:00.000000'
+	                group by supplier_no)
+                select	 su_suppkey, su_name, su_address, su_phone, total_revenue
+                from	 supplier, revenue0
+                where	 su_suppkey = supplier_no
+                and total_revenue = (select max(total_revenue) from revenue0)
+                order by su_suppkey
+            </statement>
+            <statement name="dropview_stmt"></statement>
+        </procedure>
+        <procedure name="Q22">
+            <statement name="query_stmt">
+                select  substr(c_state,1,1) as country,
+	                count(*) as numcust,
+	                sum(c_balance) as totacctbal
+                from customer
+                where substr(c_phone,1,1) in ('1','2','3','4','5','6','7')
+	            and c_balance > (
+                    select avg(c_BALANCE)
+			        from customer
+			        where c_balance > 0.00
+			 	    and substr(c_phone,1,1) in ('1','2','3','4','5','6','7')
+                ) and not exists (
+                    select *
+			        from oorder
+			        where o_c_id = c_id
+			     	and o_w_id = c_w_id
+			    	and o_d_id = c_d_id
+                ) 
+                group by substr(c_state,1,1)
+                order by substr(c_state,1,1)
+            </statement>
+        </procedure>
+    </dialect>
+</dialects>

@@ -29,6 +29,7 @@ import java.util.Map;
 public enum DatabaseType {
   AMAZONRDS(true, false),
   CASSANDRA(true, true),
+  CEDARDB(false, false, true, true),
   COCKROACHDB(false, false, true),
   DB2(true, false),
   H2(true, false),
