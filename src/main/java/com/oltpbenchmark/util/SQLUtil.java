@@ -584,13 +584,11 @@ WHERE t.name='%s' AND c.name='%s'
       excludedColumns.add("ROWID");
     }
 
-    try (ResultSet table_rs =
-        md.getTables(catalog, schema, null, new String[] {"TABLE", "PARTITIONED TABLE"})) {
+    try (ResultSet table_rs = md.getTables(catalog, schema, null, new String[] {"TABLE"})) {
       while (table_rs.next()) {
 
         String table_type = table_rs.getString("TABLE_TYPE");
-        if (!table_type.equalsIgnoreCase("TABLE")
-            && !table_type.equalsIgnoreCase("PARTITIONED TABLE")) {
+        if (!table_type.equalsIgnoreCase("TABLE")) {
           continue;
         }
 
