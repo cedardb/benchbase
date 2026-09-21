@@ -545,7 +545,7 @@ public class Payment extends TPCCProcedure {
       payInsertHist.setInt(4, districtID);
       payInsertHist.setInt(5, w_id);
       payInsertHist.setTimestamp(6, new Timestamp(System.currentTimeMillis()));
-      payInsertHist.setDouble(7, paymentAmount);
+      payInsertHist.setBigDecimal(7, BigDecimal.valueOf(paymentAmount));
       payInsertHist.setString(8, h_data);
       payInsertHist.executeUpdate();
     }
