@@ -23,6 +23,7 @@ import com.oltpbenchmark.benchmarks.tpcc.TPCCConstants;
 import com.oltpbenchmark.benchmarks.tpcc.TPCCUtil;
 import com.oltpbenchmark.benchmarks.tpcc.TPCCWorker;
 import com.oltpbenchmark.benchmarks.tpcc.pojo.Stock;
+import java.math.BigDecimal;
 import java.sql.*;
 import java.util.Random;
 import org.slf4j.Logger;
@@ -214,9 +215,9 @@ public class NewOrder extends TPCCProcedure {
         int ol_quantity = orderQuantities[ol_number - 1];
 
         // this may occasionally error and that's ok!
-        float i_price = getItemPrice(conn, ol_i_id);
+        BigDecimal i_price = getItemPrice(conn, ol_i_id);
 
-        float ol_amount = ol_quantity * i_price;
+        BigDecimal ol_amount = i_price.multiply(BigDecimal.valueOf(ol_quantity));
 
         Stock s = getStock(conn, ol_supply_w_id, ol_i_id, ol_quantity);
 
@@ -229,7 +230,7 @@ public class NewOrder extends TPCCProcedure {
         stmtInsertOrderLine.setInt(5, ol_i_id);
         stmtInsertOrderLine.setInt(6, ol_supply_w_id);
         stmtInsertOrderLine.setInt(7, ol_quantity);
-        stmtInsertOrderLine.setDouble(8, ol_amount);
+        stmtInsertOrderLine.setBigDecimal(8, ol_amount);
         stmtInsertOrderLine.setString(9, ol_dist_info);
         stmtInsertOrderLine.addBatch();
 
@@ -306,7 +307,7 @@ public class NewOrder extends TPCCProcedure {
     }
   }
 
-  private float getItemPrice(Connection conn, int ol_i_id) throws SQLException {
+  private BigDecimal getItemPrice(Connection conn, int ol_i_id) throws SQLException {
     try (PreparedStatement stmtGetItem = this.getPreparedStatement(conn, stmtGetItemSQL)) {
       stmtGetItem.setInt(1, ol_i_id);
       try (ResultSet rs = stmtGetItem.executeQuery()) {
@@ -316,7 +317,7 @@ public class NewOrder extends TPCCProcedure {
               "EXPECTED new order rollback: I_ID=" + ol_i_id + " not found!");
         }
 
-        return rs.getFloat("I_PRICE");
+        return rs.getBigDecimal("I_PRICE");
       }
     }
   }

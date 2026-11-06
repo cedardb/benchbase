@@ -18,13 +18,14 @@
 package com.oltpbenchmark.benchmarks.tpcc.pojo;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 public class Warehouse implements Serializable {
   static final long serialVersionUID = 0;
 
   public int w_id; // PRIMARY KEY
   public float w_ytd;
-  public double w_tax;
+  public BigDecimal w_tax = BigDecimal.ZERO;
   public String w_name;
   public String w_street_1;
   public String w_street_2;

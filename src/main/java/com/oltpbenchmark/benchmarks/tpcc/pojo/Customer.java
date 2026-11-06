@@ -17,6 +17,7 @@
 
 package com.oltpbenchmark.benchmarks.tpcc.pojo;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Objects;
 
@@ -28,10 +29,10 @@ public class Customer {
   public int c_payment_cnt;
   public int c_delivery_cnt;
   public Timestamp c_since;
-  public float c_discount;
-  public float c_credit_lim;
-  public float c_balance;
-  public float c_ytd_payment;
+  public BigDecimal c_discount = BigDecimal.ZERO;
+  public BigDecimal c_credit_lim = BigDecimal.ZERO;
+  public BigDecimal c_balance = BigDecimal.ZERO;
+  public BigDecimal c_ytd_payment = BigDecimal.ZERO;
   public String c_credit;
   public String c_last;
   public String c_first;
@@ -106,10 +107,10 @@ public class Customer {
         && c_w_id == customer.c_w_id
         && c_payment_cnt == customer.c_payment_cnt
         && c_delivery_cnt == customer.c_delivery_cnt
-        && Float.compare(customer.c_discount, c_discount) == 0
-        && Float.compare(customer.c_credit_lim, c_credit_lim) == 0
-        && Float.compare(customer.c_balance, c_balance) == 0
-        && Float.compare(customer.c_ytd_payment, c_ytd_payment) == 0
+        && Objects.equals(c_discount, customer.c_discount)
+        && Objects.equals(c_credit_lim, customer.c_credit_lim)
+        && Objects.equals(c_balance, customer.c_balance)
+        && Objects.equals(c_ytd_payment, customer.c_ytd_payment)
         && Objects.equals(c_since, customer.c_since)
         && Objects.equals(c_credit, customer.c_credit)
         && Objects.equals(c_last, customer.c_last)

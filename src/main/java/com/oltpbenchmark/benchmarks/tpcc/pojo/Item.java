@@ -17,11 +17,13 @@
 
 package com.oltpbenchmark.benchmarks.tpcc.pojo;
 
+import java.math.BigDecimal;
+
 public class Item {
 
   public int i_id; // PRIMARY KEY
   public int i_im_id;
-  public double i_price;
+  public BigDecimal i_price = BigDecimal.ZERO;
   public String i_name;
   public String i_data;
 
